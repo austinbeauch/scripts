@@ -59,11 +59,13 @@ def main():
     
     # modifiers to change the range of randomly generated planets
     mass_mod = 100
-    p_mod = 200
+    p_mod = 100
     v_mod = 25
+    masses = [100]  # sun
     for _ in range(N_BODIES):
         #  mass, pos, vel
         m = np.random.random() * mass_mod
+        masses.append(m)
         p = (np.random.random(dimensions) * p_mod) - p_mod/2
         v = (np.random.random(dimensions) * v_mod) - v_mod/2
         b = Body(m, p, v)
@@ -76,7 +78,7 @@ def main():
     ax.set_xticks([]), ax.set_yticks([]), ax.set_zticks([])
     ax.set_xlim3d(-100, 100); ax.set_ylim3d(-100, 100); ax.set_zlim3d(-100, 100)
     i = s.step()
-    graph = ax.scatter(i[..., 0], i[..., 1], i[..., 2], '.')
+    graph = ax.scatter(i[..., 0], i[..., 1], i[..., 2], '.', s=masses)
 
     def update(frame_number):
         i = s.step()
