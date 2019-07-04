@@ -15,3 +15,6 @@ A collection of all the small scripts I've made that don't fully deserve their o
 
 ### blackjack.ipynb
 - Notebook setup to simulate a game of blackjack with proper inheritance and easy scalability 
+
+### poker.ipynn
+- Notebook for playing a game of poker. Primitive, have yet to rank hands and decide a winner
