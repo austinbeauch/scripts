@@ -6,6 +6,10 @@ A collection of all the small scripts I've made that don't fully deserve their o
 
 ### dnd
 - Voice recognition application designed to listen during Dungeons & Dragons and change Philips light colours to match the current setting
+- Additional scripts for attack roll simulations (separate from the voice application, just for optimizing game strategy)
+
+### phys411
+- Old class assignment, used as a pre-test to see how well I'd fare before registering
 
 ### Champion.py:
 - Apex Legend video game screen capture program with image processing/OCR to change Philips Hue lights green upon victory
