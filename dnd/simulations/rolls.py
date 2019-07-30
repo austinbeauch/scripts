@@ -2,31 +2,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-n = 100000
+n = 1000000
 prof = 5
 armours = list(range(5,21))
 
 def attack(dmg:int, ac:int, profficiency=5, advantage=False, heavy=False):
-    prof = 0 if heavy else profficiency
+    prof = (profficiency-5) if heavy else profficiency  # heavy attack has -5 to hit
     rolls = (np.random.random(n)*20+1).astype(np.int)
     if advantage:
-        rolls = np.maximum(rolls, (np.random.random(n)*20+1).astype(np.int))
+        rolls = np.maximum(rolls, (np.random.random(n)*20+1).astype(np.int))  # roll twice, take higher
 
     damage_roll1 = (np.random.random(n)*dmg+1).astype(np.int)
-
-    # reroll on 1's & 2's
-    damage_roll1[(damage_roll1 == 1) | (damage_roll1 == 2)] = (np.random.random(len(damage_roll1[(damage_roll1 == 1) | (damage_roll1 == 2)]))*dmg+1).astype(np.int)
+    mask = (damage_roll1 <= 2)  # reroll on 1's and 2's
+    damage_roll1[mask] = (np.random.random(sum(mask))*dmg+1).astype(np.int)
     
     damage_roll2 = (np.random.random(n)*dmg+1).astype(np.int)
-    damage_roll2[(damage_roll2 == 1) | (damage_roll2 == 2)] = (np.random.random(len(damage_roll2[(damage_roll2 == 1) | (damage_roll2 == 2)]))*dmg+1).astype(np.int) 
+    mask = (damage_roll2 <= 2)
+    damage_roll2[mask] = (np.random.random(sum(mask))*dmg+1).astype(np.int)
 
-    damage_roll = np.maximum(damage_roll1, damage_roll2)
+    damage_roll = np.maximum(damage_roll1, damage_roll2)  # savage attacker, take higher damage
 
     if heavy:
         damage_roll += 10
 
-    damage_roll[rolls+prof <= ac] = 0
-    damage_roll[rolls == 20] += dmg
+    damage_roll[rolls+prof <= ac] = 0  # no damage when attack roll is <= enemy armour class
+    damage_roll[rolls == 20] += dmg  # add max damage on critical hit
     return damage_roll
 
 two_normal = []
@@ -53,12 +53,12 @@ for armour in armours:
     two_heavy.append(two_heavy_att.mean())
     two_heavy_wreckless.append(two_heavy_wreckless_att.mean())
         
-plt.plot(armours, two_normal, 'r.', label="two_normal")
-plt.plot(armours, one_normal, 'b.', label="one_normal")
-plt.plot(armours, two_wreckless, 'g.', label="two_advantage")
-plt.plot(armours, one_wreckless, 'y.', label="one_advantage")
-plt.plot(armours, two_heavy, 'c.', label="two_heavy")
-plt.plot(armours, two_heavy_wreckless, 'k.', label="two_heavy_advantage")
+plt.plot(armours, two_normal, 'r', label="two_normal")
+plt.plot(armours, one_normal, 'b', label="one_normal")
+plt.plot(armours, two_wreckless, 'g', label="two_advantage")
+plt.plot(armours, one_wreckless, 'y', label="one_advantage")
+plt.plot(armours, two_heavy, 'c', label="two_heavy")
+plt.plot(armours, two_heavy_wreckless, 'k', label="two_heavy_advantage")
 
 plt.legend()
 plt.ylabel("Average damage")
