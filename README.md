@@ -1,6 +1,9 @@
 # scripts
 A collection of all the small scripts I've made that don't fully deserve their own repository but why not throw them up.
 
+### millikan
+- Archaic computer vision script used as a proof of concept for oil drop tracking during the Millikan Oil Drop experiment
+
 ### gravity.py:
 - 3D n-body simulation (visualized in 3-d but would theoretically scale to any dimension with vector calculations)
 
