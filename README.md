@@ -4,6 +4,9 @@ A collection of all the small scripts I've made that don't fully deserve their o
 ### millikan
 - Rushed computer vision script used as a proof of concept for oil drop tracking during the Millikan Oil Drop experiment
 
+### encoder
+- Script for encoding/decoding data within images while leaving them visibly unchanged 
+
 ### gravity.py:
 - 3D n-body simulation (visualized in 3-d but would theoretically scale to any dimension with vector calculations)
 
