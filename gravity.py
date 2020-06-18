@@ -6,7 +6,7 @@ from numba import jit
 
 
 G = 6.67408e-11 * 100_000_000 
-N_BODIES = 20
+N_BODIES = 25
 
 
 class Body:
@@ -20,10 +20,9 @@ class Body:
     def __str__(self):
         return f"Body: Mass {self.mass}, Position {self.pos}, Velocity {self.vel}, Acceleration {self.acc}"
 
-    def update_position(self, t):
+    def update_movement(self, t, f):
+        self.acc = f / self.mass
         self.pos = self.pos + self.vel*t + 0.5*self.acc*t**2
-
-    def update_vel(self, t):
         self.vel = self.vel + (t * self.acc)
 
 class Simulation:
@@ -38,9 +37,8 @@ class Simulation:
                     if body_one is body_two:
                         continue
                     forces = np.add(forces, F_g(body_one, body_two))
-                body_one.acc =  forces / body_one.mass
-                body_one.update_position(timestep)
-                body_one.update_vel(timestep)
+                body_one.update_movement(timestep, forces)
+
                 coords = np.vstack((coords, body_one.pos)) if coords is not None else body_one.pos
         return coords
 
@@ -76,7 +74,9 @@ def main():
     fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(111, projection='3d')
     ax.set_xticks([]), ax.set_yticks([]), ax.set_zticks([])
-    ax.set_xlim3d(-100, 100); ax.set_ylim3d(-100, 100); ax.set_zlim3d(-100, 100)
+
+    lims = 100
+    ax.set_xlim3d(-lims, lims); ax.set_ylim3d(-lims, lims); ax.set_zlim3d(-lims, lims)
     i = s.step()
     graph = ax.scatter(i[..., 0], i[..., 1], i[..., 2], '.', s=masses)
 
